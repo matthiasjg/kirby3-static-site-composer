@@ -1,0 +1,17 @@
+{
+    "name": "matthiasjg/kirby3-static-site-composer",
+    "description": "Kirby 3 Static Site Composer",
+    "type": "kirby-plugin",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Matthias Joachim Geisler",
+            "email": "matthias@openwebcraft.com"
+        }
+    ],
+    "require": {
+        "getkirby/composer-installer": "^1.1",
+        "d4l/kirby-static-site-generator": "^1.0",
+        "bnomei/kirby3-feed": "^1.3"
+    }
+}
