@@ -21,19 +21,27 @@ git submodule add https://github.com/matthiasjg/kirby3-static-site-composer.git 
 
 ### Composer
 
+TODO
+
 ```
 composer require matthiasjg/kirby3-static-site-composer
 ```
 
 ## Setup
 
+TODO
+
 *Additional instructions on how to configure the plugin (e.g. blueprint setup, config options, etc.)*
 
 ## Options
 
+TODO
+
 *Document the options and APIs that this plugin offers*
 
 ## Development
+
+TODO
 
 *Add instructions on how to help working on the plugin (e.g. npm setup, Composer dev dependencies, etc.)*
 
@@ -44,5 +52,5 @@ MIT
 ## Credits
 
 - [Kirby 3](https://github.com/getkirby)
-- [D4L data4life gGmbH, Kirby 3 Static Site Generator](https://github.com/d4l-data4life/kirby3-static-site-generator)
-- [Bruno Meilick, Kirby 3 Feed](https://github.com/bnomei/kirby3-feed)
+- [D4L data4life gGmbH](https://github.com/d4l-data4life)
+- [Bruno Meilick](https://github.com/bnomei)
