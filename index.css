@@ -1,0 +1,17 @@
+.matthiasjg-static-site-composer__container {
+    background: #fff;
+    padding: 1.5rem;
+}
+
+.matthiasjg-static-site-composer__help {
+    margin-bottom: 1rem;
+}
+
+.matthiasjg-static-site-composer .matthiasjg-static-site-composer__status {
+    padding: 1.5rem;
+}
+
+.matthiasjg-static-site-composer__message {
+    white-space: pre;
+    overflow-x: auto;
+}
