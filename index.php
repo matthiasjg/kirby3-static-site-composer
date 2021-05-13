@@ -83,8 +83,7 @@ Kirby::plugin('matthiasjg/kirby3-static-site-composer', [
                             $fileList[$type] = array_map(function ($file) use ($baseUrl) {
                                 return [
                                     'text'   => trim($file, '/'),
-                                    'link'   => $baseUrl . ltrim($file, '/'),
-                                    'target' => '_blank'
+                                    'link'   => $baseUrl . ltrim($file, '/')
                                 ];
                             }, $fileList[$type]);
                         }

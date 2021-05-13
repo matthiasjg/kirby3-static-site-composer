@@ -49,9 +49,13 @@ panel.plugin('matthiasjg/kirby3-static-site-composer', {
                   {{ response.message }}
                 </k-text>
                 <k-line-field />
-                <k-collection :items="response.files.pages"/>
+                <k-list>
+                  <k-list-item v-for="page in response.files.pages" :text="page.text" :link="page.link" target="_blank" :icon='{ type: "page", back: "black" }' image="icon">
+                </k-list>
                 <k-line-field />
-                <k-collection :items="response.files.feeds"/>
+                <k-list>
+                  <k-list-item v-for="feed in response.files.feeds" :text="feed.text" :link="feed.link" target="_blank" :icon='{ type: "file", back: "black" }' image="icon">
+                </k-list>
               </k-box>
 
               <k-box v-if="!isBusy && response && !response.success" class="matthiasjg-static-site-composer__status" theme="negative">
