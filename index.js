@@ -25,6 +25,8 @@ panel.plugin('matthiasjg/kirby3-static-site-composer', {
         return {
           isBusy: false,
           response: null,
+          showPages: false,
+          showFeeds: false
         };
       },
       template: `
@@ -48,13 +50,13 @@ panel.plugin('matthiasjg/kirby3-static-site-composer', {
                 <k-text v-if="response.message" class="matthiasjg-static-site-composer__message" theme="help">
                   {{ response.message }}
                 </k-text>
-                <k-line-field />
-                <k-list>
-                  <k-list-item v-for="page in response.files.pages" :text="page.text" :link="page.link" target="_blank" :icon='{ type: "page", back: "black" }' image="icon">
+                <k-toggle-field v-model="showPages" label="" :text='["Show generated pages","Hide generated pages"]' icon="page"/>
+                <k-list v-if="showPages">
+                  <k-list-item v-for="page in response.files.pages" :text="page.text" :link="page.link" target="_blank" :icon='{ type: "open", back: "black" }' image="icon">
                 </k-list>
-                <k-line-field />
-                <k-list>
-                  <k-list-item v-for="feed in response.files.feeds" :text="feed.text" :link="feed.link" target="_blank" :icon='{ type: "file", back: "black" }' image="icon">
+                <k-toggle-field v-model="showFeeds" label="" :text='["Show generated feeds","Hide generated feeds"]' icon="file"/>
+                <k-list v-if="showFeeds">
+                  <k-list-item v-for="feed in response.files.feeds" :text="feed.text" :link="feed.link" target="_blank" :icon='{ type: "open", back: "black" }' image="icon">
                 </k-list>
               </k-box>
 
