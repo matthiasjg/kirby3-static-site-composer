@@ -2,7 +2,7 @@
 
 A Kirby 3 plugin for ~~building~~ composing a static site.
 
-Essentially a wrapper to trigger suitable community plugins:
+Essentially a wrapper to integrate and trigger suitable community plugins:
 
 1. [Static Site Generator](https://getkirby.com/plugins/d4l-data4life/static-site-generator)
 2. [Feed](https://getkirby.com/plugins/bnomei/feed)
@@ -11,7 +11,7 @@ Essentially a wrapper to trigger suitable community plugins:
 
 ![](screenshot_kirby3_panel_field.png)
 
-**Screenshot of field with results of successfull run**
+**Screenshot of field with results from successfull run**
 
 ![](screenshot_kirby3_panel_field_success.png)
 
@@ -29,7 +29,7 @@ git submodule add https://github.com/matthiasjg/kirby3-static-site-composer.git 
 
 ### Composer
 
-```
+```sh
 composer require matthiasjg/kirby3-static-site-composer
 ```
 

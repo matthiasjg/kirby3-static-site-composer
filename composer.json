@@ -5,7 +5,7 @@
     "license": "MIT",
     "authors": [{
         "name": "Matthias Joachim Geisler",
-        "email": "matthias@openwebcraft.com"
+        "email": "matthiasjg@openwebcraft.com"
     }],
     "require": {
         "getkirby/composer-installer": "^1.1",
