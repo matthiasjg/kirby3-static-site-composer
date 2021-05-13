@@ -90,7 +90,7 @@ Kirby::plugin('matthiasjg/kirby3-static-site-composer', [
                         $fileCount = count($fileList['pages']);
                         $feedCount = count($fileList['feeds']);
                         $message = "Generated and copied $fileCount page and $feedCount feed files.";
-                        
+
                         return ['success' => true, 'files' => $fileList, 'message' => $message];
                     }
                 ]
@@ -100,7 +100,6 @@ Kirby::plugin('matthiasjg/kirby3-static-site-composer', [
     'fields' => [
         'staticSiteComposer' => [
             'props' => [
-                'label'    => 'Compose',
                 'endpoint' => function () {
                     return $this->kirby()->option('matthiasjg.static_site_composer.endpoint');
                 }

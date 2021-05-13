@@ -21,8 +21,6 @@ Essentially a wrapper to trigger suitable community plugins:
 
 Download and copy this repository to `/site/plugins/static-site-composer`.
 
-
-
 ### Git submodule
 
 ```
@@ -31,29 +29,47 @@ git submodule add https://github.com/matthiasjg/kirby3-static-site-composer.git 
 
 ### Composer
 
-TODO
-
 ```
 composer require matthiasjg/kirby3-static-site-composer
 ```
 
 ## Setup
 
-TODO
+Instructions on how to configure the plugin, i.e. blueprint setup and config options.
 
-*Additional instructions on how to configure the plugin (e.g. blueprint setup, config options, etc.)*
+### Blueprint Field
 
-## Options
+```yml
+# site/blueprints/site.yml
+fields:
+  staticSiteComposer:
+    label: Compose
+    # help: Click here to compose a static version of the website of pages and feeds.
+    # progress: Please wait, composing site...
+    # success: Static site successfully composed.
+    # error: An error occurred
+```
 
-TODO
+### Config Options
 
-*Document the options and APIs that this plugin offers*
+For this plugin to properly work it is mandatory that one also hase a valid and working configuration for the [Static Site Generator](https://getkirby.com/plugins/d4l-data4life/static-site-generator).
 
-## Development
+Then, this plugin is confgured with the following option:
 
-TODO
+```php
+# site/config/config.php
+return [
+    'matthiasjg' => [
+       'static_site_composer' => [
+          'endpoint' => 'compose-static-site' # set to any string like 'compose-static-site' to use the built-in endpoint (mandatory when using the blueprint field)
+       ]
+    ]
+];
+```
 
-*Add instructions on how to help working on the plugin (e.g. npm setup, Composer dev dependencies, etc.)*
+### API
+
+One can also trigger the endpoint `matthiasjg.static_site_composer.endpoint`, e.g. [like so](https://github.com/matthiasjg/kirby3-static-site-composer/blob/main/index.js#L80).
 
 ## License
 
