@@ -62,7 +62,10 @@ return [
     'matthiasjg' => [
        'static_site_composer' => [
           'endpoint' => 'compose-static-site', # set to any string like 'compose-static-site' to use the built-in endpoint (mandatory when using the blueprint field)
-          'feedCollection' => 'posts' # collection for feed items
+          'feedCollection' => 'posts', # collection for feed items
+          'feedCollectionLimit' => 10, # number of items in feed
+          'feedCollectionDatefield' => 'published', # date field from feed item collection
+          'feedCollectionTextfield' => 'text' # text field from feed item collection
        ]
     ]
 ];

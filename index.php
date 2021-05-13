@@ -51,14 +51,19 @@ Kirby::plugin('matthiasjg/kirby3-static-site-composer', [
 
                         # 2. Build the RSS Feed via bnomei/kirby3-feed
                         $feedCollection = $kirby->option('matthiasjg.static_site_composer.feedCollection', 'posts');
-                        $posts = $kirby->collection($feedCollection)->limit(10);
+                        $feedCollectionLimit = $kirby->option('matthiasjg.static_site_composer.feedCollectionLimit', 10);
+                        $feedCollectionDatefield = $kirby->option('matthiasjg.static_site_composer.feedCollectionDatefield', 'published');
+                        $feedCollectionTextfield = $kirby->option('matthiasjg.static_site_composer.feedCollectionTextfield', 'text');
+                        $feedDescription = $kirby->option('matthiasjg.static_site_composer.feedDescription', 'Latest blog posts');
+
+                        $posts = $kirby->collection($feedCollection)->limit($feedCollectionLimit);
                         $feedOptions = [
                             'url'         => $baseUrl,
                             'title'       => $kirby->site()->title() . ' Feed',
-                            'description' => 'Latest writing',
+                            'description' => $feedDescription,
                             'link'        => $baseUrl,
-                            'datefield'   => 'published',
-                            'textfield'   => 'text'
+                            'datefield'   => $feedCollectionDatefield,
+                            'textfield'   => $feedCollectionTextfield
                         ];
                         $outputPath = resolveRelativePath($kirby, $outputFolder);
                         $feeds = [
