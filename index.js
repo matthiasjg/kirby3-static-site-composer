@@ -6,7 +6,7 @@ panel.plugin('matthiasjg/kirby3-static-site-composer', {
         endpoint: String,
         help: {
           type: String,
-          default: 'Click the button to compose a static version of the website.',
+          default: 'Click here to compose a static version of the website of pages and feeds.',
         },
         progress: {
           type: String,
