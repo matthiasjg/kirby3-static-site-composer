@@ -1,17 +1,27 @@
 # Kirby 3 Static Site Composer
 
-A Kirby 3 plugin for building a static site.
+A Kirby 3 plugin for ~~building~~ composing a static site.
 
 Essentially a wrapper to trigger suitable community plugins:
 
 1. [Static Site Generator](https://getkirby.com/plugins/d4l-data4life/static-site-generator)
 2. [Feed](https://getkirby.com/plugins/bnomei/feed)
 
+**Screenshot of field's initial state in Kirby 3 Panel**
+
+![](screenshot_kirby3_panel_field.png)
+
+**Screenshot of field with results of successfull run**
+
+![](screenshot_kirby3_panel_field_success.png)
+
 ## Installation
 
 ### Download
 
 Download and copy this repository to `/site/plugins/static-site-composer`.
+
+
 
 ### Git submodule
 
