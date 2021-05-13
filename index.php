@@ -50,7 +50,8 @@ Kirby::plugin('matthiasjg/kirby3-static-site-composer', [
                         $fileList['pages'] = $staticSiteGenerator->generate($outputFolder, $baseUrl, $preserve);
 
                         # 2. Build the RSS Feed via bnomei/kirby3-feed
-                        $posts = $kirby->collection('posts')->limit(10);
+                        $feedCollection = $kirby->option('matthiasjg.static_site_composer.feedCollection', 'posts');
+                        $posts = $kirby->collection($feedCollection)->limit(10);
                         $feedOptions = [
                             'url'         => $baseUrl,
                             'title'       => $kirby->site()->title() . ' Feed',

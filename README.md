@@ -61,7 +61,8 @@ Then, this plugin is confgured with the following option:
 return [
     'matthiasjg' => [
        'static_site_composer' => [
-          'endpoint' => 'compose-static-site' # set to any string like 'compose-static-site' to use the built-in endpoint (mandatory when using the blueprint field)
+          'endpoint' => 'compose-static-site', # set to any string like 'compose-static-site' to use the built-in endpoint (mandatory when using the blueprint field)
+          'feedCollection' => 'posts' # collection for feed items
        ]
     ]
 ];
