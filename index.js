@@ -49,7 +49,9 @@ panel.plugin('matthiasjg/kirby3-static-site-composer', {
                   {{ response.message }}
                 </k-text>
                 <k-line-field />
-                <k-collection :items="response.files"/>
+                <k-collection :items="response.files.pages"/>
+                <k-line-field />
+                <k-collection :items="response.files.feeds"/>
               </k-box>
 
               <k-box v-if="!isBusy && response && !response.success" class="matthiasjg-static-site-composer__status" theme="negative">

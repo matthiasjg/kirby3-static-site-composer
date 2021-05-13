@@ -43,7 +43,11 @@ Kirby::plugin('matthiasjg/kirby3-static-site-composer', [
                         $pages = $kirby->site()->index()->filterBy('intendedTemplate', 'not in', $skipTemplates);
                         $staticSiteGenerator = new StaticSiteGenerator($kirby, null, $pages);
                         $staticSiteGenerator->skipMedia($skipMedia);
-                        $fileList = $staticSiteGenerator->generate($outputFolder, $baseUrl, $preserve);
+                        $fileList = [
+                            'pages' => [],
+                            'feeds' => []
+                        ];
+                        $fileList['pages'] = $staticSiteGenerator->generate($outputFolder, $baseUrl, $preserve);
 
                         # 2. Build the RSS Feed via bnomei/kirby3-feed
                         $posts = $kirby->collection('posts')->limit(10);
@@ -70,20 +74,23 @@ Kirby::plugin('matthiasjg/kirby3-static-site-composer', [
                             $feedOptions['snippet'] = $config['snippet'];
                             $feedResponse = $posts->feed($feedOptions);
                             F::write($config['filePath'], $feedResponse->body());
-                            array_push($fileList, $config['filePath']);
+                            array_push($fileList['feeds'], $config['filePath']);
                         }
 
                         # 3. Return composed result (file list and count), status
-                        $fileList = str_replace($outputPath . '/', '', $fileList);
-                        $fileList = array_map(function ($file) use ($baseUrl) {
-                            return [
-                                'text'   => trim($file, '/'),
-                                'link'   => $baseUrl . ltrim($file, '/'),
-                                'target' => '_blank'
-                            ];
-                        }, $fileList);
-                        $fileCount = count($fileList);
-                        return ['success' => true, 'files' => $fileList, 'message' => "$fileCount files generated / copied"];
+                        foreach (array_keys($fileList) as &$type) {
+                            $fileList[$type] = str_replace($outputPath . '/', '', $fileList[$type]);
+                            $fileList[$type] = array_map(function ($file) use ($baseUrl) {
+                                return [
+                                    'text'   => trim($file, '/'),
+                                    'link'   => $baseUrl . ltrim($file, '/'),
+                                    'target' => '_blank'
+                                ];
+                            }, $fileList[$type]);
+                        }
+                        $fileCount = count($fileList['pages']);
+                        $feedCount = count($fileList['feeds']);
+                        return ['success' => true, 'files' => $fileList, 'message' => "Generated and copied $fileCount page and $feedCount feed files."];
                     }
                 ]
             ];
