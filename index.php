@@ -34,6 +34,9 @@ Kirby::plugin('matthiasjg/kirby3-static-site-composer', [
                     'method'  => 'POST',
                     'action'  => function () use ($kirby) {
 
+                        $kirbyBaseUrl = $kirby->url('index');
+                        $homeFolder = $kirby->site()->homePageId();
+
                         # 1. Build the Website via d4l/static_site_generator
                         $outputFolder = $kirby->option('matthiasjg.static_site_composer.output_folder', './static');
                         $baseUrl = $kirby->option('matthiasjg.static_site_composer.base_url', '/');
@@ -52,7 +55,6 @@ Kirby::plugin('matthiasjg/kirby3-static-site-composer', [
                         $fileList['pages'] = $staticSiteGenerator->generate($outputFolder, $baseUrl, $preserve);
 
                         if ($pagesParentHomeRoot) {
-                            $homeFolder = $kirby->site()->homePageId();
                             $fileList['pages'] = array_map(function ($page) use ($homeFolder, $outputFolder) {
                                 if (strpos($page, $homeFolder)) {
                                     $pageDir = F::dirname($page);
@@ -76,18 +78,33 @@ Kirby::plugin('matthiasjg/kirby3-static-site-composer', [
                         $feedCollectionDatefield = $kirby->option('matthiasjg.static_site_composer.feed_collection_datefield', 'date');
                         $feedCollectionTextfield = $kirby->option('matthiasjg.static_site_composer.feed_collection_textfield', 'text');
 
+
                         $posts = $kirby->collection($feedCollection)->limit($feedCollectionLimit);
+                        $posts = $posts->map(function ($post) use ($pagesParentHomeRoot, $homeFolder, $kirbyBaseUrl, $baseUrl) {
+                            if ($post->url()) {
+                                $url = $post->url();
+                                if ($pagesParentHomeRoot) {
+                                    $url = str_replace('/' . $homeFolder . '/', '', $url);
+                                }
+                                $post->update([
+                                    'feedurl' => str_replace($kirbyBaseUrl, $baseUrl, $url)
+                                ]);
+                            }
+                            return $post;
+                        });
                         $feedOptions = [
                             'url'         => $baseUrl,
                             'title'       => $kirby->site()->title() . ' Feed',
                             'description' => $feedDescription,
                             'link'        => $baseUrl,
                             'datefield'   => $feedCollectionDatefield,
-                            'textfield'   => $feedCollectionTextfield
+                            'textfield'   => $feedCollectionTextfield,
+                            'urlfield'    => 'feedurl'
                         ];
                         $outputPath = resolveRelativePath($kirby, $outputFolder);
                         foreach ($feedFormats as $feedFormat) {
                             $feedOptions['snippet'] = 'feed/' . $feedFormat;
+                            $feedOptions['feedurl'] = $baseUrl . 'feed.' . $feedFormat;
                             $feedFilepath = $outputPath . '/feed.' . $feedFormat;
                             $feedResponse = $posts->feed($feedOptions);
                             F::write($feedFilepath, $feedResponse->body());
