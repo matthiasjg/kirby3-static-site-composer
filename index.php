@@ -86,7 +86,7 @@ Kirby::plugin('matthiasjg/kirby3-static-site-composer', [
                                 if ($pagesParentHomeRoot) {
                                     $url = str_replace('/' . $homeFolder . '/', '', $url);
                                 }
-                                $post->append([ // not persisted, virtual field in data array
+                                $post->update([ // persist field in page data
                                     'feedurl' => str_replace($kirbyBaseUrl, $baseUrl, $url)
                                 ]);
                             }
