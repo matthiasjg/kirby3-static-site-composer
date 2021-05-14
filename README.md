@@ -52,23 +52,38 @@ fields:
 
 ### Config Options
 
-For this plugin to properly work it is mandatory that one also hase a valid and working configuration for the [Static Site Generator](https://getkirby.com/plugins/d4l-data4life/static-site-generator).
-
-Then, this plugin is confgured with the following option:
+This plugin is confgured with the following options:
 
 ```php
 # site/config/config.php
 return [
-    'matthiasjg' => [
-       'static_site_composer' => [
-          'endpoint' => 'compose-static-site', # set to any string like 'compose-static-site' to use the built-in endpoint (mandatory when using the blueprint field)
-          'feedCollection' => 'posts', # collection for feed items
-          'feedCollectionLimit' => 10, # number of items in feed
-          'feedCollectionDatefield' => 'published', # date field from feed item collection
-          'feedCollectionTextfield' => 'text' # text field from feed item collection
-       ]
+  'matthiasjg' => [
+    'static_site_composer' => [
+      'endpoint'                  => 'compose-static-site', # set to any string like 'compose-static-site' to use the built-in endpoint (mandatory when using the blueprint field)
+      'output_folder'             => './static', # you can specify an absolute or relative path
+      'preserve'                  => [], # preserve individual files / folders in the root level of the output folder (anything starting with "." is always preserved)
+      'base_url'                  => '/', # if the static site is not mounted to the root folder of your domain, change accordingly here
+      'skip_media'                => false, # set to true to skip copying media files, e.g. when they are already on a CDN; combinable with 'preserve' => ['media']
+      'skip_templates'            => [], # ignore pages with given templates (home is always rendered)
+      'feed_formats'              => ['rss', 'json'], # format of feeds  
+      'feed_description'          => 'Latest posts from the blog', # description for feed
+      'feed_collection'           => 'posts', # collection for feed items
+      'feed_collection_limit'     => 10, # number of collection items in feed
+      'feed_collection_datefield' => 'date', # date field from collection
+      'feed_collection_textfield' => 'text' # text field from collection
     ]
+  ]
 ];
+```
+
+### HTML Template
+
+```html
+<!-- RSS Feed -->
+<link rel="alternate" type="application/rss+xml"  href="<?= site()->url() ?>/feed.rss"  title="<?= $site->title()->html() ?> RSS Feed">
+
+<!-- JSON Feed -->
+<link rel="alternate" type="application/json"     href="<?= site()->url() ?>/feed.json" title="<?= $site->title()->html() ?> JSON Feed">
 ```
 
 ### API

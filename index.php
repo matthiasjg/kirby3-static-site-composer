@@ -34,11 +34,11 @@ Kirby::plugin('matthiasjg/kirby3-static-site-composer', [
                     'action'  => function () use ($kirby) {
 
                         # 1. Build the Website via d4l/static_site_generator
-                        $outputFolder = $kirby->option('d4l.static_site_generator.output_folder', './static');
-                        $baseUrl = $kirby->option('d4l.static_site_generator.base_url', '/');
-                        $preserve = $kirby->option('d4l.static_site_generator.preserve', []);
-                        $skipMedia = $kirby->option('d4l.static_site_generator.skip_media', false);
-                        $skipTemplates = array_diff($kirby->option('d4l.static_site_generator.skip_templates', []), ['home']);
+                        $outputFolder = $kirby->option('matthiasjg.static_site_composer.output_folder', './static');
+                        $baseUrl = $kirby->option('matthiasjg.static_site_composer.base_url', '/');
+                        $preserve = $kirby->option('matthiasjg.static_site_composer.preserve', []);
+                        $skipMedia = $kirby->option('matthiasjg.static_site_composer.skip_media', false);
+                        $skipTemplates = array_diff($kirby->option('matthiasjg.static_site_composer.skip_templates', []), ['home']);
 
                         $pages = $kirby->site()->index()->filterBy('intendedTemplate', 'not in', $skipTemplates);
                         $staticSiteGenerator = new StaticSiteGenerator($kirby, null, $pages);
@@ -50,11 +50,12 @@ Kirby::plugin('matthiasjg/kirby3-static-site-composer', [
                         $fileList['pages'] = $staticSiteGenerator->generate($outputFolder, $baseUrl, $preserve);
 
                         # 2. Build the RSS Feed via bnomei/kirby3-feed
-                        $feedCollection = $kirby->option('matthiasjg.static_site_composer.feedCollection', 'posts');
-                        $feedCollectionLimit = $kirby->option('matthiasjg.static_site_composer.feedCollectionLimit', 10);
-                        $feedCollectionDatefield = $kirby->option('matthiasjg.static_site_composer.feedCollectionDatefield', 'published');
-                        $feedCollectionTextfield = $kirby->option('matthiasjg.static_site_composer.feedCollectionTextfield', 'text');
-                        $feedDescription = $kirby->option('matthiasjg.static_site_composer.feedDescription', 'Latest blog posts');
+                        $feedFormats = $kirby->option('matthiasjg.static_site_composer.feed_formats', ['rss', 'json']);
+                        $feedDescription = $kirby->option('matthiasjg.static_site_composer.feed_description', 'Latest posts from the blog');
+                        $feedCollection = $kirby->option('matthiasjg.static_site_composer.feed_collection', 'posts');
+                        $feedCollectionLimit = $kirby->option('matthiasjg.static_site_composer.feed_collection_limit', 10);
+                        $feedCollectionDatefield = $kirby->option('matthiasjg.static_site_composer.feed_collection_datefield', 'date');
+                        $feedCollectionTextfield = $kirby->option('matthiasjg.static_site_composer.feed_collection_textfield', 'text');
 
                         $posts = $kirby->collection($feedCollection)->limit($feedCollectionLimit);
                         $feedOptions = [
@@ -66,21 +67,12 @@ Kirby::plugin('matthiasjg/kirby3-static-site-composer', [
                             'textfield'   => $feedCollectionTextfield
                         ];
                         $outputPath = resolveRelativePath($kirby, $outputFolder);
-                        $feeds = [
-                            'rss'         => [
-                                'filePath'  => $outputPath . '/feed/rss/index.xml',
-                                'snippet'   => 'feed/rss'
-                            ],
-                            'json'         => [
-                                'filePath'  => $outputPath . '/feed/json/index.json',
-                                'snippet'   => 'feed/json'
-                            ]
-                        ];
-                        foreach ($feeds as $type => $config) {
-                            $feedOptions['snippet'] = $config['snippet'];
+                        foreach ($feedFormats as $feedFormat) {
+                            $feedOptions['snippet'] = 'feed/' . $feedFormat;
+                            $feedFilepath = $outputPath . '/feed.' . $feedFormat;
                             $feedResponse = $posts->feed($feedOptions);
-                            F::write($config['filePath'], $feedResponse->body());
-                            array_push($fileList['feeds'], $config['filePath']);
+                            F::write($feedFilepath, $feedResponse->body());
+                            array_push($fileList['feeds'], $feedFilepath);
                         }
 
                         # 3. Return composed result (file list and count), status
