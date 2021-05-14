@@ -4,6 +4,7 @@ namespace Matthiasjg;
 
 use Kirby\Cms\App as Kirby;
 use Kirby\Toolkit\F;
+use Kirby\Toolkit\Dir;
 use D4L\StaticSiteGenerator as StaticSiteGenerator;
 
 function resolveRelativePath(Kirby $kirby, string $path = null)
@@ -39,6 +40,7 @@ Kirby::plugin('matthiasjg/kirby3-static-site-composer', [
                         $preserve = $kirby->option('matthiasjg.static_site_composer.preserve', []);
                         $skipMedia = $kirby->option('matthiasjg.static_site_composer.skip_media', false);
                         $skipTemplates = array_diff($kirby->option('matthiasjg.static_site_composer.skip_templates', []), ['home']);
+                        $pagesParentHomeRoot = $kirby->option('matthiasjg.static_site_composer.pages_parent_home_root', false);
 
                         $pages = $kirby->site()->index()->filterBy('intendedTemplate', 'not in', $skipTemplates);
                         $staticSiteGenerator = new StaticSiteGenerator($kirby, null, $pages);
@@ -48,6 +50,23 @@ Kirby::plugin('matthiasjg/kirby3-static-site-composer', [
                             'feeds' => []
                         ];
                         $fileList['pages'] = $staticSiteGenerator->generate($outputFolder, $baseUrl, $preserve);
+
+                        if ($pagesParentHomeRoot) {
+                            $homeFolder = $kirby->site()->homePageId();
+                            $fileList['pages'] = array_map(function ($page) use ($homeFolder, $outputFolder) {
+                                if (strpos($page, $homeFolder)) {
+                                    $pageDir = F::dirname($page);
+                                    Dir::move($pageDir, $outputFolder . DS . F::name($pageDir));
+                                    $page = str_replace($homeFolder . '/', '', $page);
+                                }
+                                return $page;
+                            }, $fileList['pages']);
+                            $homeDir = $outputFolder . DS . $homeFolder;
+                            if (Dir::exists($homeDir) && Dir::isEmpty($homeDir)) {
+                                Dir::remove($homeDir);
+                            }
+                        }
+                        sort($fileList['pages']);
 
                         # 2. Build the RSS Feed via bnomei/kirby3-feed
                         $feedFormats = $kirby->option('matthiasjg.static_site_composer.feed_formats', ['rss', 'json']);
@@ -74,10 +93,13 @@ Kirby::plugin('matthiasjg/kirby3-static-site-composer', [
                             F::write($feedFilepath, $feedResponse->body());
                             array_push($fileList['feeds'], $feedFilepath);
                         }
+                        sort($fileList['feeds']);
 
                         # 3. Return composed result (file list and count), status
                         foreach (array_keys($fileList) as &$type) {
-                            $fileList[$type] = str_replace($outputPath . '/', '', $fileList[$type]);
+                            $fileList[$type] = str_replace($outputPath, '', $fileList[$type]);
+                            $fileList[$type] = str_replace('//', '/', $fileList[$type]);
+                            $fileList[$type] = array_unique($fileList[$type]);
                             $fileList[$type] = array_map(function ($file) use ($baseUrl) {
                                 return [
                                     'text'   => trim($file, '/'),

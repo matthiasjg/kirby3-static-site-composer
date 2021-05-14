@@ -65,6 +65,7 @@ return [
       'base_url'                  => '/', # if the static site is not mounted to the root folder of your domain, change accordingly here
       'skip_media'                => false, # set to true to skip copying media files, e.g. when they are already on a CDN; combinable with 'preserve' => ['media']
       'skip_templates'            => [], # ignore pages with given templates (home is always rendered)
+      'pages_parent_home_root'    => false, # copy pages w/ parent=site.homePage from home/* to root /*
       'feed_formats'              => ['rss', 'json'], # format of feeds  
       'feed_description'          => 'Latest posts from the blog', # description for feed
       'feed_collection'           => 'posts', # collection for feed items
