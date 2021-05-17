@@ -84,19 +84,19 @@ Kirby::plugin('matthiasjg/kirby3-static-site-composer', [
                             if ($post->url()) {
                                 $url = $post->url();
                                 if ($pagesParentHomeRoot) {
-                                    $url = str_replace('/' . $homeFolder . '/', '', $url);
+                                    $url = str_replace('/' . $homeFolder . '/', '/', $url);
                                 }
                                 $post->update([ // persist field in page data
-                                    'feedurl' => str_replace($kirbyBaseUrl, $baseUrl, $url)
+                                    'feedurl' => $url
                                 ]);
                             }
                             return $post;
                         });
                         $feedOptions = [
-                            'url'         => $baseUrl,
+                            'url'         => $kirbyBaseUrl,
                             'title'       => $kirby->site()->title() . ' Feed',
                             'description' => $feedDescription,
-                            'link'        => $baseUrl,
+                            'link'        => $kirbyBaseUrl,
                             'datefield'   => $feedCollectionDatefield,
                             'textfield'   => $feedCollectionTextfield,
                             'urlfield'    => 'feedurl'
@@ -104,7 +104,7 @@ Kirby::plugin('matthiasjg/kirby3-static-site-composer', [
                         $outputPath = resolveRelativePath($kirby, $outputFolder);
                         foreach ($feedFormats as $feedFormat) {
                             $feedOptions['snippet'] = 'feed/' . $feedFormat;
-                            $feedOptions['feedurl'] = $baseUrl . 'feed.' . $feedFormat;
+                            $feedOptions['feedurl'] = $kirbyBaseUrl . '/feed.' . $feedFormat;
                             $feedFilepath = $outputPath . '/feed.' . $feedFormat;
                             $feedResponse = $posts->feed($feedOptions);
                             F::write($feedFilepath, $feedResponse->body());
@@ -120,7 +120,7 @@ Kirby::plugin('matthiasjg/kirby3-static-site-composer', [
                             $fileList[$type] = array_map(function ($file) use ($baseUrl) {
                                 return [
                                     'text'   => trim($file, '/'),
-                                    'link'   => $baseUrl . ltrim($file, '/')
+                                    'link'   => $baseUrl . '/' . ltrim($file, '/')
                                 ];
                             }, $fileList[$type]);
                         }
