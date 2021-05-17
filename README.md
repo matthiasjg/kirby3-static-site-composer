@@ -66,6 +66,7 @@ return [
       'skip_media'                => false, # set to true to skip copying media files, e.g. when they are already on a CDN; combinable with 'preserve' => ['media']
       'skip_templates'            => [], # ignore pages with given templates (home is always rendered)
       'pages_parent_home_root'    => false, # copy pages w/ parent=site.homePage from home/* to root /*
+      'preview_url_slug'               => 'preview' # the blueprint option.preview: for site (e.g. "/preview/home"), page (e.g. "/preview{{ page.parent.url }}/{{ page.slug }}") or post (e.g. "/preview/{{ page.parent.slug }}/{{ page.slug }}") 
       'feed_formats'              => ['rss', 'json'], # format of feeds  
       'feed_description'          => 'Latest posts from the blog', # description for feed
       'feed_collection'           => 'posts', # collection for feed items

@@ -21,6 +21,22 @@ Kirby::plugin('matthiasjg/kirby3-static-site-composer', [
     'options' => [
         'endpoint' => 'compose-static-site'
     ],
+    'routes' => function ($kirby) {
+        $previewUrlSlug = $kirby->option('matthiasjg.static_site_composer.preview_url_slug', 'preview');
+        return [
+            [
+                'pattern' => $previewUrlSlug . '/(:all)',
+                'action'  => function ($uid) use ($kirby) {
+                    if ($page = $kirby->site()->findPageOrDraft($uid)) {
+                        return $kirby->site()->visit($page);
+                    } else if ($post = $kirby->site()->homePage()->findPageOrDraft($uid)) {
+                        return $kirby->site()->visit($post);
+                    }
+                    $this->next();
+                }
+            ]
+        ];
+    },
     'api' => [
         'routes' => function ($kirby) {
             $endpoint = $kirby->option('matthiasjg.static_site_composer.endpoint');
