@@ -133,10 +133,10 @@ Kirby::plugin('matthiasjg/kirby3-static-site-composer', [
                             $fileList[$type] = str_replace($outputPath, '', $fileList[$type]);
                             $fileList[$type] = str_replace('//', '/', $fileList[$type]);
                             $fileList[$type] = array_unique($fileList[$type]);
-                            $fileList[$type] = array_map(function ($file) use ($baseUrl) {
+                            $fileList[$type] = array_map(function ($file) use ($kirbyBaseUrl) {
                                 return [
                                     'text'   => trim($file, '/'),
-                                    'link'   => $baseUrl . '/' . ltrim($file, '/')
+                                    'link'   => $kirbyBaseUrl . '/' . ltrim($file, '/')
                                 ];
                             }, $fileList[$type]);
                         }

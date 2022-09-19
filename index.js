@@ -37,8 +37,8 @@ panel.plugin('matthiasjg/kirby3-static-site-composer', {
             target: "_blank",
             image: {
               back: "pattern",
-              icon: "file-document",
-              color: "gray-800"
+              icon: "page",
+              color: "gray-500"
             }
           }));
         },
@@ -49,8 +49,8 @@ panel.plugin('matthiasjg/kirby3-static-site-composer', {
             target: "_blank",
             image: {
               back: "pattern",
-              icon: "file-code",
-              color: "gray-800"
+              icon: "file",
+              color: "gray-500"
             }
           }));
         }
