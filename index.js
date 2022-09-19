@@ -51,13 +51,13 @@ panel.plugin('matthiasjg/kirby3-static-site-composer', {
                   {{ response.message }}
                 </k-text>
                 <k-toggle-field v-model="showPages" label="" :text='["Show generated pages","Hide generated pages"]' icon="page"/>
-                <k-list-field v-if="showPages">
+                <k-items v-if="showPages">
                   <k-item v-for="page in response.files.pages" :text="page.text" :link="page.link" target="_blank" :icon='{ type: "open", back: "black" }' image="icon"/>
-                </k-list-field>
+                </k-items>
                 <k-toggle-field v-model="showFeeds" label="" :text='["Show generated feeds","Hide generated feeds"]' icon="file"/>
-                <k-list-field v-if="showFeeds">
+                <k-items v-if="showFeeds">
                   <k-item v-for="feed in response.files.feeds" :text="feed.text" :link="feed.link" target="_blank" :icon='{ type: "open", back: "black" }' image="icon"/>
-                </k-list-field>
+                </k-items>
               </k-box>
 
               <k-box v-if="!isBusy && response && !response.success" class="matthiasjg-static-site-composer__status" theme="negative">
