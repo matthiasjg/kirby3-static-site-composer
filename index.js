@@ -29,6 +29,30 @@ panel.plugin('matthiasjg/kirby3-static-site-composer', {
           showFeeds: false
         };
       },
+      computed: {
+        pageItems() {
+          return this.response?.files?.pages?.map((page) => ({
+            text: page.text,
+            link: page.link,
+            target: "_blank",
+            image: {
+              back: "black",
+              icon: "open"
+            }
+          }));
+        },
+        feedItems() {
+          return this.response?.files?.feeds?.map((feed) => ({
+            text: feed.text,
+            link: feed.link,
+            target: "_blank",
+            image: {
+              back: "black",
+              icon: "open"
+            }
+          }));
+        }
+      },
       template: `
           <div class="matthiasjg-static-site-composer">
             <section class="k-pages-section" class="matthiasjg-static-site-composer__container">
@@ -51,13 +75,9 @@ panel.plugin('matthiasjg/kirby3-static-site-composer', {
                   {{ response.message }}
                 </k-text>
                 <k-toggle-field v-model="showPages" label="" :text='["Show generated pages","Hide generated pages"]' icon="page"/>
-                <k-items v-if="showPages">
-                  <k-item v-for="page in response.files.pages" :text="page.text" :link="page.link" target="_blank" :icon='{ type: "open", back: "black" }' image="icon"/>
-                </k-items>
+                <k-items v-if="showPages" :items="pageItems"/>
                 <k-toggle-field v-model="showFeeds" label="" :text='["Show generated feeds","Hide generated feeds"]' icon="file"/>
-                <k-items v-if="showFeeds">
-                  <k-item v-for="feed in response.files.feeds" :text="feed.text" :link="feed.link" target="_blank" :icon='{ type: "open", back: "black" }' image="icon"/>
-                </k-items>
+                <k-items v-if="showFeeds" :items="feedItems"/>
               </k-box>
 
               <k-box v-if="!isBusy && response && !response.success" class="matthiasjg-static-site-composer__status" theme="negative">
