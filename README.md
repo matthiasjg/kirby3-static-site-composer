@@ -4,7 +4,7 @@ A Kirby 3 plugin for ~~building~~ composing a static site.
 
 Essentially a wrapper to integrate and trigger suitable community plugins:
 
-1. [Static Site Generator](https://getkirby.com/plugins/d4l-data4life/static-site-generator)
+1. [Static Site Generator](https://getkirby.com/plugins/d4l/static-site-generator)
 2. [Feed](https://getkirby.com/plugins/bnomei/feed)
 
 **Screenshot of field's initial state in Kirby 3 Panel**
